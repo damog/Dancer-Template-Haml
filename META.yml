@@ -1,7 +1,7 @@
 ---
 abstract: 'Haml wrapper for Dancer'
 author:
-  - 'This module has been written by David Moreno, L<http://stereonaut.net/>.'
+  - 'This module has been written by David Moreno, L<http://stereonaut.net/>. This module'
 build_requires:
   ExtUtils::MakeMaker: 6.42
 configure_requires:
