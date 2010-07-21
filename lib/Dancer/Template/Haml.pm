@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Text::Haml;
+use Dancer::FileUtils 'path';
 
 use vars '$VERSION';
 use base 'Dancer::Template::Abstract';
@@ -14,10 +15,26 @@ my $_engine;
 
 sub init { $_engine = Text::Haml->new }
 
+sub view ($$) {
+    my ($self, $view) = @_;
+    $view .= ".haml" if $view !~ /\.haml$/;
+    return path(Dancer::Config::setting('views'), $view);
+}
+
+sub layout($$$$) {
+    my ($self, $layout, $tokens, $content) = @_;
+
+    $layout .= '.haml' if $layout !~ /\.haml/;
+    $layout = path(Dancer::Config::setting('views'), 'layouts', $layout);
+
+    my $full_content =
+      Dancer::Template->engine->render($layout,
+        {%$tokens, content => $content});
+    $full_content;
+}
+
 sub render($$$) {
     my ($self, $template, $tokens) = @_;
-
-	$template =~ s/\.tt$/\.haml/;
 
     die "'$template' is not a regular file"
       if ref($template) || (!-f $template);
@@ -71,6 +88,10 @@ In order to use this engine, set the following setting as the following:
 
 This can be done in your config.yml file or directly in your app code with the
 B<set> keyword.
+
+This module overrides L<Dancer::Template::Abstract> methods B<view> and B<layout>
+to automatically append an absent ".haml" suffix. 
+
 
 =head1 SEE ALSO
 
