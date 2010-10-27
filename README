@@ -34,12 +34,61 @@ DESCRIPTION
     This can be done in your config.yml file or directly in your app code
     with the set keyword.
 
+    Through configuration you may activate and define filters and helpers.
+    For the list of predefined filters, and other details, check the
+    documentation in the ./lib/Dancer/Template/Haml.pm module. The ./t
+    directory provides examples.
+
+    Activate two of the predefined filters:
+
+        haml:
+          filters_activate:
+            markdown:
+            textile:
+
+    Provide options:
+
+        haml:
+          filters_activate:
+            markdown:
+              tab_width: 2
+              trust_list_start_value: 1
+
+    Define your own filter:
+
+        haml:
+          filters_activate:
+            knuthreflow:
+              maximum => 65,
+              module => 'Text::Reflow'
+              renderer => reflow_string
+
+    One (token) Helper is provided:
+
+        haml:
+          helpers_activate:
+            tictoc:
+
+    Define you own helper:
+
+        haml:
+          helpers_activate:
+            foo:
+              helper: 'sub { shift; my $s = shift; $s =~ s/r/z/; $s;}'
+
+    Invoke your helper:
+
+        Haml                         Html
+        ---------------              ----------------
+        %p= foo("bar")               <p>baz</p>
+
+
 SEE ALSO
     Dancer, Text::Haml
 
 TODO
-    The usage of helpers, filters and attributes. This will be implemented
-    once Dancer has capabilities to take specific parameters for each
+    The usage of helpers, filters and attributes. This will be expanded
+    as Dancer expands its capabilities to take specific parameters for each
     templating engine it supports.
 
 AUTHOR
