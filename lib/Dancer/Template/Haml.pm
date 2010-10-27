@@ -15,16 +15,16 @@ my $_engine;
 
 sub init { $_engine = Text::Haml->new }
 
-sub view ($$) {
+sub view {
     my ($self, $view) = @_;
     $view .= ".haml" if $view !~ /\.haml$/;
     return path(Dancer::Config::setting('views'), $view);
 }
 
-sub layout($$$$) {
+sub layout {
     my ($self, $layout, $tokens, $content) = @_;
 
-    $layout .= '.haml' if $layout !~ /\.haml/;
+    $layout .= '.haml' if $layout !~ /\.haml$/;
     $layout = path(Dancer::Config::setting('views'), 'layouts', $layout);
 
     my $full_content =
@@ -33,7 +33,7 @@ sub layout($$$$) {
     $full_content;
 }
 
-sub render($$$) {
+sub render {
     my ($self, $template, $tokens) = @_;
 
     die "'$template' is not a regular file"
