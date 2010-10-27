@@ -37,11 +37,13 @@ sub render {
     my ($self, $template, $tokens) = @_;
 
     die "'$template' is not a regular file"
-      if ref($template) || (!-f $template);
+      unless ref($template) || (-f $template);
 
     my $content = q{};
-    $content = $_engine->render_file($template, %$tokens)
-		or die $_engine->error;
+    $content = ref($template)
+               ? $_engine->render($$template,%$tokens)
+               : $_engine->render_file($template, %$tokens)
+        or die $_engine->error;
     return $content;
 }
 
