@@ -3,7 +3,7 @@ use warnings;
 use Test::More tests => 6;
 
 BEGIN {
-  use lib '../../lib';
+  #use lib '../../lib';
   use_ok( 'Dancer::Template::Haml' ) or die 'Template engine unavailable';
 }
 

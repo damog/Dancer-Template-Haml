@@ -1,9 +1,9 @@
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::More tests => 5;
 
 BEGIN {
-  use lib '../../lib';
+  #use lib '../../lib';
   use_ok( 'Dancer::Template::Haml' ) or die 'Template engine unavailable';
 }
 
@@ -92,3 +92,30 @@ $htmlexpected = <<'HTML';
 HTML
 is ($htmloutput, $htmlexpected, "Helper: foo" );
 
+
+# helpers_activate: lorem
+# Although Text::Lorem is also shown as a Filter
+# (see: 02_template_render/03_filters_authordef.t),
+# it would be better classified as a Helper (although the
+# configuration as a Helper is clunkier than as a Filter).
+SKIP: {
+eval { require Text::Lorem };
+skip "Text::Lorem not installed; skipping", 1 if $@;
+$config = {
+    engines => {
+         haml => {
+            helpers_activate => {
+                   lorem => {
+                          helper => 'sub { my(undef,$u,$c)=@_; use Text::Lorem; Text::Lorem->new->$u($c); }'
+                   },
+            },},},};
+$e = Dancer::Template->init('haml',$config);
+$hamltemplate = <<'HAML';
+%div
+  %p= lorem('paragraphs',3)
+HAML
+{  no strict 'refs';
+$htmloutput = $e->render( \$hamltemplate, $config );
+}
+like ($htmloutput, qr/<div>\n  <p>[a-zA-Z .]+\.(\n\n[a-zA-Z .]+\.){2}<\/p>\n<\/div>/, "Helper: Text::Lorem" );
+}

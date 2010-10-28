@@ -3,7 +3,7 @@ use warnings;
 use Test::More tests =>5;
 
 BEGIN {
-  use lib '../../lib';
+  #use lib '../../lib';
   use_ok( 'Dancer::Template::Haml' ) or die 'Template engine unavailable';
 }
 
@@ -105,6 +105,8 @@ is($htmloutput, $htmlexpected, "Filter: Text::Reflow" );
 
 
 # filters_activate: Text::Lorem
+# See also: 02_template_render/04_helpers.t for implementation
+# as a Helper, as which Text::Lorem is more properly classified.
 SKIP: {
 eval { require Text::Lorem };
 skip "Text::Lorem not installed; skipping", 1 if $@;
@@ -126,7 +128,7 @@ HAML
 {  no strict 'refs';
 $htmloutput = $e->render( \$hamltemplate, $config );
 }
-like ($htmloutput, qr/<p>(\n[a-zA-Z .]+.\n){3}<\/p>/, "Filter: Text::Lorem" );
+like ($htmloutput, qr/<p>(\n[a-zA-Z .]+\.\n){3}<\/p>/, "Filter: Text::Lorem" );
 }
 
 
@@ -188,6 +190,6 @@ HAML
 {  no strict 'refs';
 $htmloutput = $e->render( \$hamltemplate, $config );
 }
-like ($htmloutput, qr/(?s:<pre>\n\n NOAA Logo.*<\/pre>)/, "Filter: LWP::Simple + HTML::TokeParser" );
+like ($htmloutput, qr/(<pre>\n\n NOAA Logo.*<\/pre>)/s, "Filter: LWP::Simple + HTML::TokeParser" );
 }
 
