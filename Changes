@@ -1,5 +1,22 @@
 Revision history for Dancer-Template-Haml
 
+0.02    [enosis]
+        Wed Oct 27 16:00:00 PST 2010
+        - Facility for defining and activating Haml filters and helpers
+
+0.01_02 [enosis]
+        Wed Oct 27 15:30:00 PST 2010
+        - Dancer::Template::Abstract defines the interface to render()
+          as: (a) a reference to string, or (b) a string path to file.
+
+0.01_01 [enosis]
+        Wed Jul 21 14:00:00 PST 2010
+        - Adjust for change moving methods view() and template() 
+          from Dancer::Helpers to Dancer::Template::Abstract.
+          <http://github.com/sukria/Dancer/commit/ddbdc768c15e6196c05465689f30c0ffc42b32ba>
+          This revision supports appending a missing .haml suffix.
+          render() no longer converts s/.tt$/.haml/ 
+
 0.01    Mon Feb  8 14:40:15 EST 2010
         - original version
 
